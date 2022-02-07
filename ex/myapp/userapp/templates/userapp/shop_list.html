@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+{% block content %} 
+
+
+    <div class="container">
+
+        {% regroup object_list by address as sorted %}
+            {% for country in sorted %}
+            <div class="item" style="padding: 10px; margin: 10px; border: 1px solid #333333;">
+
+            {% for shop in country.list %}     
+                {% if forloop.counter <= 1 %}
+                    {% if shop.address == country.grouper %}
+                        <a href="{% url 'userapp:detail' shop.pk %}">
+                            <h6>{{ country.list|length }}users</h6>
+                        </a>
+                    {% endif %}
+
+                    <a href="{{ shop.address }}">
+                        {{ shop.name }}
+                    </a>
+
+                    <p style="font-size: 12px;">{{ shop.created_at }}</p>
+                {% endif %}
+            {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+<style>
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        padding-top: 10px;
+        justify-content: space-between;
+    }
+    .item {
+        width: calc(33% - 28px);
+        height: 110px;
+        margin-right: 7px;
+        margin-bottom: 30px;
+    }
+</style>
+{% endblock %}

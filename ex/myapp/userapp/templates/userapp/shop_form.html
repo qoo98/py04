@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<h1>ブックマークの{{ object|yesno:'更新,登録'}}</h1>
+
+<form action='' method='post'>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type='submit' class='submit'>{{ object|yesno:'更新,登録する'}}</button>
+</form>
+
+
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends 'layout.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+      <div class="media">
+        <div class="col-2">
+          <img src="{{ user.profile.image.url }}">
+            <p class="account-heading">name:{{ user.username }}</p>
+            <div class="buttons">
+                <button type="button" class="btn btn-primary mb-12" data-toggle="modal" data-target="#testModal">編集</button>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">退会</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="testModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">プロフィール編集</h4>
+                    <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                </div>
+                     <!-- FORM HERE -->
+                      <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <fieldset class="form-group">
+                            {{ u_form|crispy }} <!-- User form -->
+                            {{ p_form|crispy }} <!-- Profile form -->
+                        </fieldset>
+                        <div class="form-group">
+                            <button class="btn btn-outline-info" type="submit">Update</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+
+ 
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">退会しますか？</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="comment">退会するには現在のパスワードを入力して「退会する」ボタンをクリックしてください。この処理は元に戻すことはできません。</p>
+          <form method="POST" enctype="multipart/form-data" action="{% url 'userapp:delete' pk=user.id %}">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                {{ c_form.current_password | as_crispy_field}}
+            </fieldset>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+          <div class="form-group">
+            <button class="btn btn-danger" type="submit">退会する</button>
+        </div>
+        </form>    
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="listitem">
+    {% for shop in shops %}      
+      {% if request.user.id == shop.author_id %}
+        <div class="item" style="padding: 10px; margin: 10px; border: 1px solid #333333;">
+                <a href="{{ shop.address }}">
+                    {{ shop.name }}
+                </a>        
+            <p style="font-size: 12px;">{{ shop.message }}</p>
+            <p style="font-size: 12px;">{{ shop.created_at }}</p>
+        </div>
+      {% endif %}
+    {% endfor %}
+    </div>
+
+</div>
+
+
+    <style>
+      .comment {
+        background-color: orchid;
+          }
+
+          .buttons {
+            display: flex;
+          }
+
+          .content-section {
+            display: flex;
+            justify-content: space-between;
+          }
+
+          .media {
+            flex-grow: 1;
+          }
+
+          .listitem {
+            flex-grow: 7;
+          }
+          
+          img {
+            width: 100px;
+            height: 100px;
+          }
+    </style>
+{% endblock content %}
+

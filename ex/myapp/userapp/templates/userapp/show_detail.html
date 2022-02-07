@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div class="container">                    
+    <a href="{{ shop.address }}" style="font-size: 60px;">
+        {{ object.name }}
+    </a>          
+    <h2>{{ shops|length }}users</h2>
+    <h3>コメント</h3>
+
+    {% for shop in shops %}
+            <div class="item" style="padding: 10px; margin: 10px;"> 
+                    <img class="account-img" src="{{ shop.author.profile.image.url }}">
+                <div class="profile">
+                    <h5>{{ shop.author.username }}</h5>
+                    <p>{{ shop.message }}</p>
+                </div>
+        </div>
+    {% endfor %}
+</div>
+    </div>
+
+    <style>
+        .item {
+            display: flex;
+        }
+
+        img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .profile {
+        padding: 15px;
+    }
+
+    </style>
+    {% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <!-- Sign up form -->
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group"> 
+                {{ form.email | as_crispy_field }}
+                {{ form.password1 | as_crispy_field }}
+                {{ form.password2 | as_crispy_field }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Sign up</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
